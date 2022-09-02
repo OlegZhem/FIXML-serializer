@@ -1,0 +1,63 @@
+<fixMessage>
+    <header>
+        <BeginString fix="8">FIX.4.4</BeginString>
+        <BodyLength fix="9">495</BodyLength>
+        <MsgSeqNum fix="34">506</MsgSeqNum>
+        <MsgType fix="35" description="ExecutionReport">8</MsgType>
+        <SenderCompID fix="49">IFIX-EQ-UAT</SenderCompID>
+        <SendingTime fix="52">20200214-11:00:50.252946</SendingTime>
+        <TargetCompID fix="56">TST1</TargetCompID>
+        <DeliverToCompID fix="128">RENC</DeliverToCompID>
+        <DeliverToSubID fix="129">CARE</DeliverToSubID>
+    </header>
+    <body>
+        <AvgPx fix="6">0</AvgPx>
+        <ClOrdID fix="11">0123456789</ClOrdID>
+        <CumQty fix="14">250</CumQty>
+        <ExecID fix="17">89545922</ExecID>
+        <SecurityIDSource fix="22" description="ISIN_NUMBER">4</SecurityIDSource>
+        <LastPx fix="31">203.32</LastPx>
+        <LastQty fix="32">250</LastQty>
+        <OrderID fix="37">19052919036</OrderID>
+        <OrderQty fix="38">3000</OrderQty>
+        <OrdStatus fix="39" description="PARTIALLY_FILLED">1</OrdStatus>
+        <OrdType fix="40" description="MARKET">1</OrdType>
+        <SecurityID fix="48">US5949181045</SecurityID>
+        <Side fix="54" description="SELL">2</Side>
+        <Symbol fix="55">MSFT</Symbol>
+        <TransactTime fix="60">20200214-11:00:50</TransactTime>
+        <SettlDate fix="64">20200218</SettlDate>
+        <ExDestination fix="100">XTKO</ExDestination>
+        <ExecType fix="150" description="TRADE">F</ExecType>
+        <LeavesQty fix="151">2750</LeavesQty>
+        <AccruedInterestAmt fix="159">0.0</AccruedInterestAmt>
+        <SecurityExchange fix="207">XTKO</SecurityExchange>
+        <Yield fix="236">0.0</Yield>
+        <MDEntryID fix="278">174186</MDEntryID>
+        <SecondaryClOrdID fix="526">CARE</SecondaryClOrdID>
+        <TradingSessionSubID fix="625">NORM</TradingSessionSubID>
+        <LastLiquidityInd fix="851" description="REMOVED_LIQUIDITY">2</LastLiquidityInd>
+        <Tag5020 fix="5020">20200218</Tag5020>
+        <Tag5155 fix="5155">NCC</Tag5155>
+        <Tag5459 fix="5459">Y2</Tag5459>
+        <Tag6029 fix="6029">USD</Tag6029>
+        <Tag6636 fix="6636">N</Tag6636>
+        <Tag7693 fix="7693">10455</Tag7693>
+        <Tag9412 fix="9412">250501</Tag9412>
+        <NoPartyIDs fix="453" itemCount="2">
+            <item>
+                <PartyIDSource fix="447" description="PROPRIETARY_CUSTOM_CODE">D</PartyIDSource>
+                <PartyID fix="448">AF1</PartyID>
+                <PartyRole fix="452" description="EXECUTING_FIRM">1</PartyRole>
+            </item>
+            <item>
+                <PartyIDSource fix="447" description="PROPRIETARY_CUSTOM_CODE">D</PartyIDSource>
+                <PartyID fix="448">AF2</PartyID>
+                <PartyRole fix="452" description="CLIENT_ID">3</PartyRole>
+            </item>
+        </NoPartyIDs>
+    </body>
+    <trailer>
+        <CheckSum fix="10">217</CheckSum>
+    </trailer>
+</fixMessage>
