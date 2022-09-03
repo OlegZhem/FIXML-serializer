@@ -176,7 +176,13 @@ public class JacksonCustomSerializer extends StdSerializer<Message> {
                 xmlGenerator.writeStringField("description", description);
             }
             xmlGenerator.setNextIsAttribute(false);
-            xmlGenerator.writeRaw(value);
+            String valueConvertSpecialSymbols = value
+                    .replace("&", "&amp;")
+                    .replace(">", "&gt;")
+                    .replace("<", "&lt;")
+                    .replace("'", "&apos;")
+                    .replace("\"", "&quot;");
+            xmlGenerator.writeRaw(valueConvertSpecialSymbols);
             xmlGenerator.writeEndObject();
          } catch (IOException e) {
             LOG.error("Discard field " + tagNumber + "(" + tagName + ") due to exception.", e);

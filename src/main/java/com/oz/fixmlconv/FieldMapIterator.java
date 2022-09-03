@@ -25,4 +25,5 @@ public abstract class FieldMapIterator {
                                Consumer<Integer> groupItemEnd,
                                Consumer<Integer> groupEndSerializer);
 
+    public abstract boolean isEmpty();
 }

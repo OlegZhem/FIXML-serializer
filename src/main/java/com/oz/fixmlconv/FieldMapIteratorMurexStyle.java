@@ -56,4 +56,9 @@ public class FieldMapIteratorMurexStyle extends FieldMapIterator{
         }
     }
 
+    @Override
+    public boolean isEmpty() {
+        return fieldMap.isEmpty();
+    }
+
 }

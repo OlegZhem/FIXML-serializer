@@ -23,20 +23,20 @@ public class StringBuilderSerializer {
     public String serialize(Message message) throws IOException, ConfigError, FieldNotFound {
         final DataDictionary dataDictionary;
         if(null == customDataDictionary) {
-                 dataDictionary = DictionaryManager.dictionaryByMessage(message);
+            dataDictionary = DictionaryManager.dictionaryByMessage(message);
         } else {
             dataDictionary = customDataDictionary;
         }
 
         StringBuilder builder = new StringBuilder();
-        writeTag(builder, "message", () -> {
+        writeTag(builder, "fixMessage", () -> {
             serializeFieldMap(builder, "header",
                     fieldMapIteratorFactory.create(message.getHeader()), dataDictionary);
             serializeFieldMap(builder, "body",
                     fieldMapIteratorFactory.create(message), dataDictionary);
             serializeFieldMap(builder, "trailer",
                     fieldMapIteratorFactory.create(message.getTrailer()), dataDictionary);
-                });
+        });
         return builder.toString();
     }
 
@@ -51,16 +51,24 @@ public class StringBuilderSerializer {
         builder.append(name);
         builder.append(">\n");
     }
+
+    private void writeTag( StringBuilder builder, String name) {
+        builder.append("<");
+        builder.append(name);
+        builder.append("/>\n");
+    }
+
     private void writeTag( StringBuilder builder, String name, Runnable tagContent) {
         writeTagBegin(builder, name);
         tagContent.run();
         writeTagEnd(builder, name);
     }
+
     private void writeTag( StringBuilder builder, String name, Runnable attributes, Runnable tagContent) {
         builder.append("<");
         builder.append(name);
         attributes.run();
-        builder.append(">\n");
+        builder.append(">");
         tagContent.run();
         writeTagEnd(builder, name);
     }
@@ -75,14 +83,18 @@ public class StringBuilderSerializer {
 
     private void serializeFieldMap(StringBuilder builder, String tag,
                                    FieldMapIterator fieldMapIterator, DataDictionary dataDictionary) {
-        writeTag(builder, tag, () -> {
-            fieldMapIterator.forEach(
-                    x -> fieldToXml(builder, x, dataDictionary),
-                    (x, y) -> groupToXmlBegin(builder, x, y, dataDictionary),
-                    x -> writeTagBegin(builder, "item"),
-                    x -> writeTagEnd(builder, "item"),
-                    x -> groupToXmlEnd(builder, x, dataDictionary));
-        });
+        if(fieldMapIterator.isEmpty()) {
+            writeTag(builder, tag);
+        } else {
+            writeTag(builder, tag, () -> {
+                fieldMapIterator.forEach(
+                        x -> fieldToXml(builder, x, dataDictionary),
+                        (x, y) -> groupToXmlBegin(builder, x, y, dataDictionary),
+                        x -> writeTagBegin(builder, "item"),
+                        x -> writeTagEnd(builder, "item"),
+                        x -> groupToXmlEnd(builder, x, dataDictionary));
+            });
+        }
     }
 
     private boolean groupToXmlBegin(StringBuilder builder, Integer groupTag,
@@ -108,6 +120,12 @@ public class StringBuilderSerializer {
         int tagNumber = field.getTag();
         String tagName = getTagName(tagNumber, dataDictionary);
         String value = (String) field.getObject();
+        String valueConvertSpecialSymbols = value
+                .replace("&", "&amp;")
+                .replace(">", "&gt;")
+                .replace("<", "&lt;")
+                .replace("'", "&apos;")
+                .replace("\"", "&quot;");
         String description = null == dataDictionary ? null : dataDictionary.getValueName(tagNumber, value);
         writeTag(builder, tagName,
                 () -> {
@@ -116,7 +134,7 @@ public class StringBuilderSerializer {
                         writeAttribute(builder, "description", description);
                     }
                 },
-                () -> builder.append(value));
+                () -> builder.append(valueConvertSpecialSymbols));
     }
 
     private String getTagName(int tagNumber, DataDictionary dataDictionary) {

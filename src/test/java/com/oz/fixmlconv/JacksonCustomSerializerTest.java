@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -51,6 +52,38 @@ class JacksonCustomSerializerTest {
                 "851=2|5020=20200218|5155=NCC|5459=Y2|6029=USD|6636=N|7693=10455|9412=250501|453=2|448=AF1|" +
                 "447=D|452=1|448=AF2|447=D|452=3|10=217|";
         DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
+
+        String actualFixml = process(fieldMapIteratorFactory, FIX_MESSAGE, dataDictionary);
+
+        String expectedFixml = FileHelper.readFile(expectedXmlFileName);
+        assertEquals(expectedFixml.replace("\r","").replaceAll("(?<=\\n)[\\t ]+",""), actualFixml.replace("><", ">\n<"));
+    }
+
+    @Test
+    void specialSymbols() throws ConfigError, InvalidMessage, IOException {
+        FieldMapIteratorFactory fieldMapIteratorFactory = new FieldMapIteratorFactoryMurexStyle();
+        String FIX_MESSAGE = "8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|";
+        DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
+
+        String actualFixml = process(fieldMapIteratorFactory, FIX_MESSAGE, dataDictionary);
+
+        String expectedFixml = "<fixMessage>\n" +
+                "<header>\n" +
+                "<BeginString fix=\"8\">FIX.4.4</BeginString>\n" +
+                "<MsgType fix=\"35\" description=\"ExecutionReport\">8</MsgType>\n" +
+                "<SendingTime fix=\"52\">20200214-11:00:50.252946</SendingTime>\n" +
+                "</header>\n" +
+                "<body>\n" +
+                "<ExDestination fix=\"100\">AA&amp;BB</ExDestination>\n" +
+                "</body>\n" +
+                "<trailer/>\n" +
+                "</fixMessage>";
+        assertEquals(expectedFixml, actualFixml.replace("><", ">\n<"));
+    }
+
+    private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
+                           String FIX_MESSAGE,
+                           DataDictionary dataDictionary) throws InvalidMessage, IOException {
         Message message = new Message();
         message.fromString(FIX_MESSAGE.replaceAll(REGEX_REPLACE_VERTICAL_SLASH, CHAR_SOH), dataDictionary, false);
         Writer jsonWriter = new StringWriter();
@@ -58,12 +91,12 @@ class JacksonCustomSerializerTest {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         SerializerProvider serializerProvider = xmlMapper.getSerializerProvider();
-        new JacksonCustomSerializer(dataDictionary, fieldMapIteratorFactory).serialize(message, toXmlGenerator, serializerProvider);
+        new JacksonCustomSerializer(dataDictionary, fieldMapIteratorFactory)
+                .serialize(message, toXmlGenerator, serializerProvider);
         toXmlGenerator.flush();
         String actualFixml = jsonWriter.toString();
         LOG.info(actualFixml);
-        String expectedFixml = FileHelper.readFile(expectedXmlFileName);
-        assertEquals(expectedFixml.replace("\r","").replaceAll("(?<=\\n)[\\t ]+",""), actualFixml.replace("><", ">\n<"));
+        return actualFixml;
     }
 
 }
