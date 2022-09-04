@@ -21,8 +21,8 @@ The FIXML Murex style looks like:
 </fixMessage>
 ```
 
-#Usage
-##Quick start
+# Usage
+## Quick start
 Load data to Message object and generate FIXML using object Serializer.
 ```
 import quickfix.Group;
@@ -43,7 +43,7 @@ import com.oz.fixmlconv.Serializer;
 You need to fill tag 8 with the correct value. Otherwise, the names of all tags and groups will look like TagXXX.
 You could find more examples in src/test/java/com/oz/fixmlconv/SerializerTest.java
 
-##Custom dictionary
+## Custom dictionary
 Create a custom data dictionary to add fields and/or groups that do not exist in the FIX standard.
 Example of custom dictionary is  src/test/resources/dict/customFIX44.xml.
 Use Serializer constructor with path to file of the custom dictionary.
