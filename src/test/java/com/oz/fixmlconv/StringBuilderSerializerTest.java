@@ -14,17 +14,13 @@ class StringBuilderSerializerTest {
     private static final Logger LOG = LoggerFactory.getLogger(StringBuilderSerializerTest.class);
 
 
-    private final static String CHAR_SOH = "";
-
-    private static final String REGEX_REPLACE_VERTICAL_SLASH = "\\|(?=((\\d*=)|$))";
-
     @Test
     void specialSymbols() throws ConfigError, InvalidMessage, IOException, FieldNotFound {
         FieldMapIteratorFactory fieldMapIteratorFactory = new FieldMapIteratorFactoryMurexStyle();
-        String FIX_MESSAGE = "8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|";
+        String strMesage = "8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|";
         DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
 
-        String actualFixml = process(fieldMapIteratorFactory, FIX_MESSAGE, dataDictionary);
+        String actualFixml = process(fieldMapIteratorFactory, strMesage);
 
         String expectedFixml = "<fixMessage>\n" +
                 "<header>\n" +
@@ -41,13 +37,11 @@ class StringBuilderSerializerTest {
     }
 
     private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
-                           String fix_message,
-                           DataDictionary dataDictionary)
+                           String strMesage)
             throws InvalidMessage, ConfigError, IOException, FieldNotFound {
-        Message message = new Message();
-        message.fromString(fix_message.replaceAll(REGEX_REPLACE_VERTICAL_SLASH, CHAR_SOH), dataDictionary, false);
+        Message message = new Convertor().withDelimiter("|").fromString(strMesage);
         StringBuilderSerializer stringBuilderSerializer =
-                new StringBuilderSerializer(dataDictionary, fieldMapIteratorFactory);
+                new StringBuilderSerializer(DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
         String actualFixml = stringBuilderSerializer.serialize(message);
         LOG.info(actualFixml);
         return actualFixml;

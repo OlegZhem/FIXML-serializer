@@ -20,13 +20,11 @@ public class NativeConverter {
 
     private final static String CHAR_SOH = "";
 
-    private static final String DELIMITER_VERTICAL_SLASH = "|";
-
-    private static final String REGEX_EXPRESSION_REPLACE_VERTICAL_SLASH = "\\|(?=((\\d*=)|$))";
+    private static final String REGEX_EXPRESSION_REPLACE_VERTICAL_SLASH = "\\|(?=((\\d+=)|$))";
 
     @Test
     void serialize() throws IOException, ConfigError, InvalidMessage {
-        String FIX_MESSAGE = "8=FIX.4.4|9=495|35=8|34=506|49=IFIX-EQ-UAT|52=20200214-11:00:50.252946|56=MU9999900002|128=RENC|129=CARE|1=L05+00000F01|6=0|11=00022201705ESLO1|14=250|17=89545922|22=4|31=203.32|32=250|37=19052919036|38=3000|39=1|40=1|48=RU0009029557|54=2|55=SBERP|60=20200214-11:00:50|64=20200218|100=RTSX|150=F|151=2750|159=0.0|207=RTSX|236=0.0|278=174186|336=TQBR|526=CARE|625=NORM|851=2|5020=20200218|5155=NCC|5459=Y2|6029=SUR|6636=N|7693=10455|9412=250501|453=2|448=MC9999900000|447=D|452=1|448=FID002|447=D|452=3|10=217|";
+        String FIX_MESSAGE = "8=FIX.4.4|9=495|35=8|34=506|49=IFIX-EQ-UAT|52=20200214-11:00:50.252946|56=MU9999900002|128=TEMP|129=CARE|1=ACC1|6=0|11=00022201705ESLO1|14=250|17=89545922|22=4|31=203.32|32=250|37=19052919036|38=3000|39=1|40=1|48=RU0009029557|54=2|55=SBERP|60=20200214-11:00:50|64=20200218|100=RTSX|150=F|151=2750|159=0.0|207=RTSX|236=0.0|278=174186|336=TQBR|526=CARE|625=NORM|851=2|5020=20200218|5155=NCC|5459=Y2|6029=SUR|6636=N|7693=10455|9412=250501|453=2|448=MC9999900000|447=D|452=1|448=FID002|447=D|452=3|10=217|";
         DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
         Message message = new Message();
         message.fromString(FIX_MESSAGE.replaceAll(REGEX_EXPRESSION_REPLACE_VERTICAL_SLASH, CHAR_SOH), dataDictionary, false);
@@ -58,7 +56,7 @@ public class NativeConverter {
             "            <![CDATA[MU9999900002]]>\n" +
             "        </field>\n" +
             "        <field name=\"DeliverToCompID\" tag=\"128\">\n" +
-            "            <![CDATA[RENC]]>\n" +
+            "            <![CDATA[TEMP]]>\n" +
             "        </field>\n" +
             "        <field name=\"DeliverToSubID\" tag=\"129\">\n" +
             "            <![CDATA[CARE]]>\n" +
@@ -66,7 +64,7 @@ public class NativeConverter {
             "    </header>\n" +
             "    <body>\n" +
             "        <field name=\"Account\" tag=\"1\">\n" +
-            "            <![CDATA[L05+00000F01]]>\n" +
+            "            <![CDATA[ACC1]]>\n" +
             "        </field>\n" +
             "        <field name=\"AvgPx\" tag=\"6\">\n" +
             "            <![CDATA[0]]>\n" +

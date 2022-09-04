@@ -13,13 +13,13 @@ public class Convertor {
 
     private static final List<String> SPECIAL_REGEX_CHARS = List.of(
             ".","^","$","*","+","-","?","(",")","[","]","{","}","\\","|","—","/" );
-     private static final String REGEX_POSITIVE_LOOKAHEAD_AFTER_DELIMITER = "(?=((\\d*=)|$))";
-    private static final String REGEX_REPLACE_VERTICAL_SLASH = "\\|(?=((\\d*=)|$))";
+    private static final String REGEX_POSITIVE_LOOKAHEAD_AFTER_DELIMITER = "(?=((\\d+=)|$))";
+    //private static final String REGEX_REPLACE_VERTICAL_SLASH = "\\|(?=((\\d*=)|$))";
 
     private DataDictionary dataDictionary;
     private String delimiter;
 
-    public Convertor() throws ConfigError {
+    public Convertor() {
         dataDictionary = null;
         delimiter = CHAR_SOH;
     }
