@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import quickfix.ConfigError;
 import quickfix.Group;
+import quickfix.InvalidMessage;
 import quickfix.Message;
 import quickfix.field.*;
 
@@ -209,6 +210,33 @@ public class SerializerTest {
                 "  <trailer>\n" +
                 "    <CheckSum fix=\"10\">000</CheckSum>\n" +
                 "  </trailer>\n" +
+                "</fixMessage>\n", fixml.replace("\r",""));
+    }
+
+    @Test
+    void fromText() throws ConfigError, InvalidMessage, JsonProcessingException {
+        Message message = new Convertor().fromString("8=FIX.4.4|35=8|453=2|448=AF1|447=D|452=1|448=AF2|447=D|452=3|");
+        String fixml = new Serializer().toFixml(message);
+        assertEquals("<fixMessage>\n" +
+                "  <header>\n" +
+                "    <BeginString fix=\"8\">FIX.4.4</BeginString>\n" +
+                "    <MsgType fix=\"35\" description=\"ExecutionReport\">8</MsgType>\n" +
+                "  </header>\n" +
+                "  <body>\n" +
+                "    <NoPartyIDs fix=\"453\" itemCount=\"2\">\n" +
+                "      <item>\n" +
+                "        <PartyIDSource fix=\"447\" description=\"PROPRIETARY_CUSTOM_CODE\">D</PartyIDSource>\n" +
+                "        <PartyID fix=\"448\">AF1</PartyID>\n" +
+                "        <PartyRole fix=\"452\" description=\"EXECUTING_FIRM\">1</PartyRole>\n" +
+                "      </item>\n" +
+                "      <item>\n" +
+                "        <PartyIDSource fix=\"447\" description=\"PROPRIETARY_CUSTOM_CODE\">D</PartyIDSource>\n" +
+                "        <PartyID fix=\"448\">AF2</PartyID>\n" +
+                "        <PartyRole fix=\"452\" description=\"CLIENT_ID\">3</PartyRole>\n" +
+                "      </item>\n" +
+                "    </NoPartyIDs>\n" +
+                "  </body>\n" +
+                "  <trailer/>\n" +
                 "</fixMessage>\n", fixml.replace("\r",""));
     }
 

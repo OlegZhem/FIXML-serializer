@@ -40,8 +40,8 @@ class StringBuilderSerializerTest {
                            String strMesage)
             throws InvalidMessage, ConfigError, IOException, FieldNotFound {
         Message message = new Convertor().withDelimiter("|").fromString(strMesage);
-        StringBuilderSerializer stringBuilderSerializer =
-                new StringBuilderSerializer(DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
+        StringBuilderSerializer stringBuilderSerializer = new StringBuilderSerializer(
+                DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
         String actualFixml = stringBuilderSerializer.serialize(message);
         LOG.info(actualFixml);
         return actualFixml;
