@@ -1,15 +1,12 @@
 package com.oz.fixmlconv;
 
 import quickfix.*;
-import quickfix.field.ApplVerID;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Convertor {
+public class FixMsgFactory {
 
     private final static String CHAR_SOH = String.valueOf('\u0001');
 
@@ -28,13 +25,13 @@ public class Convertor {
     private DataDictionary dataDictionary;
     private String delimiter;
 
-    public Convertor() {
+    public FixMsgFactory() {
         dataDictionary = null;
         //delimiter = CHAR_SOH;
         delimiter = null;
     }
 
-    public Message fromString(String messageString) throws ConfigError, InvalidMessage {
+    public Message parseText(String messageString) throws ConfigError, InvalidMessage {
         Message message = new Message();
         String sohMessageString = replaceDelimiterToSOH(messageString);
         DataDictionary usedDictionary = dataDictionary;
@@ -85,7 +82,7 @@ public class Convertor {
     }
 
 
-    public Convertor withDataDictionary(String dictionaryFileName) throws ConfigError {
+    public FixMsgFactory withDataDictionary(String dictionaryFileName) throws ConfigError {
         if(null == dictionaryFileName || dictionaryFileName.isEmpty()) {
             this.dataDictionary = null;
         } else {
@@ -94,12 +91,12 @@ public class Convertor {
         return this;
     }
 
-    public Convertor withDataDictionary(DataDictionary dictionary) throws ConfigError {
+    public FixMsgFactory withDataDictionary(DataDictionary dictionary) throws ConfigError {
         this.dataDictionary = dictionary;
         return this;
     }
 
-    public Convertor withDelimiter(String delimiter) {
+    public FixMsgFactory withDelimiter(String delimiter) {
         if(SPECIAL_REGEX_CHARS.contains(delimiter)) {
             this.delimiter = "\\" + delimiter;
         } else {

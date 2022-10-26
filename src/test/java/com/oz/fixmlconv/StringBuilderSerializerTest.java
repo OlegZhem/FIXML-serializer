@@ -39,7 +39,7 @@ class StringBuilderSerializerTest {
     private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
                            String strMesage)
             throws InvalidMessage, ConfigError, IOException, FieldNotFound {
-        Message message = new Convertor().withDelimiter("|").fromString(strMesage);
+        Message message = new FixMsgFactory().withDelimiter("|").parseText(strMesage);
         StringBuilderSerializer stringBuilderSerializer = new StringBuilderSerializer(
                 DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
         String actualFixml = stringBuilderSerializer.serialize(message);

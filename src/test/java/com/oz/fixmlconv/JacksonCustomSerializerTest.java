@@ -76,7 +76,7 @@ class JacksonCustomSerializerTest {
 
     private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
                            String strMessage) throws InvalidMessage, IOException, ConfigError, FieldNotFound {
-        Message message = new Convertor().withDelimiter("|").fromString(strMessage);
+        Message message = new FixMsgFactory().withDelimiter("|").parseText(strMessage);
         Writer jsonWriter = new StringWriter();
         ToXmlGenerator toXmlGenerator = new XmlFactory().createGenerator(jsonWriter);
         XmlMapper xmlMapper = new XmlMapper();

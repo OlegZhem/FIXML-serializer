@@ -65,14 +65,14 @@ import com.oz.fixmlconv.Serializer;
         String fixml = new Serializer("dict/customFIX44.xml").toFixml(message);
 ```
 ## Message From Text
-Helper class Convertor allows to create Message from the string.
+Helper class FixMsgFactory allows to create Message from the string.
 ```
 import quickfix.ConfigError;
 import quickfix.FieldNotFound;
 import quickfix.InvalidMessage;
 import quickfix.Message;
 ...
-       Message message = new Convertor().fromString("8=FIX.4.4|35=8|453=2|448=AF1|447=D|452=1|448=AF2|447=D|452=3|");
+       Message message = new FixMsgFactory().parseText("8=FIX.4.4|35=8|453=2|448=AF1|447=D|452=1|448=AF2|447=D|452=3|");
        String fixml = new Serializer().toFixml(message);
 ```
 
