@@ -72,7 +72,8 @@ import quickfix.FieldNotFound;
 import quickfix.InvalidMessage;
 import quickfix.Message;
 ...
-       Message message = new FixMsgFactory().parseText("8=FIX.4.4|35=8|453=2|448=AF1|447=D|452=1|448=AF2|447=D|452=3|");
+       Message message = new FixMsgFactory().withDataDictionary("dict/customFIX44.xml").parseText(
+       "8=FIX.4.4|35=8|453=2|448=AF1|447=D|452=1|448=AF2|447=D|452=3|");
        String fixml = new Serializer().toFixml(message);
 ```
 

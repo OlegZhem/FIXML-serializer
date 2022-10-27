@@ -2,7 +2,9 @@ package com.oz.fixmlconv;
 
 import quickfix.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,13 +88,8 @@ public class FixMsgFactory {
         if(null == dictionaryFileName || dictionaryFileName.isEmpty()) {
             this.dataDictionary = null;
         } else {
-            this.dataDictionary = new DataDictionary(dictionaryFileName);
+            this.dataDictionary = DictionaryManager.getDictionary(dictionaryFileName);
         }
-        return this;
-    }
-
-    public FixMsgFactory withDataDictionary(DataDictionary dictionary) throws ConfigError {
-        this.dataDictionary = dictionary;
         return this;
     }
 

@@ -17,7 +17,14 @@ public class DictionaryManager {
 
     public static DataDictionary getDictionary(String dataDictionaryFileName) throws ConfigError {
         if(!cachedDict.containsKey(dataDictionaryFileName)) {
-            cachedDict.put(dataDictionaryFileName, new DataDictionary(dataDictionaryFileName));
+            synchronized (cachedDict) {
+                if(!cachedDict.containsKey(dataDictionaryFileName)) {
+                    LOG.info("Load dictionary: {}", dataDictionaryFileName);
+                    cachedDict.put(dataDictionaryFileName, new DataDictionary(dataDictionaryFileName));
+                } else {
+                    LOG.debug("Skip duplicate loading dictionary: {}", dataDictionaryFileName);
+                }
+            }
         }
         return cachedDict.get(dataDictionaryFileName);
     }
