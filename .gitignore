@@ -23,7 +23,7 @@
 hs_err_pid*
 
 # Target repository
-*/target
+**/target/
 
 # IntelliJ IDEA project
-*/.idea/
+**/.idea/
