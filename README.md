@@ -85,3 +85,5 @@ import quickfix.Message;
 This is a maven project.
 Use a maven to build and test the jar library.
 
+## JMH
+There are two [JMH](https://github.com/openjdk/jmh) tests to compare Jackson with simple StringBuilder. Find results in perf directory.

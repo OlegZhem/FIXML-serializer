@@ -18,7 +18,6 @@ class StringBuilderSerializerTest {
     void specialSymbols() throws ConfigError, InvalidMessage, IOException, FieldNotFound {
         FieldMapIteratorFactory fieldMapIteratorFactory = new FieldMapIteratorFactoryMurexStyle();
         String strMesage = "8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|";
-        DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
 
         String actualFixml = process(fieldMapIteratorFactory, strMesage);
 
@@ -37,9 +36,9 @@ class StringBuilderSerializerTest {
     }
 
     private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
-                           String strMesage)
+                           String strMessage)
             throws InvalidMessage, ConfigError, IOException, FieldNotFound {
-        Message message = new FixMsgFactory().withDelimiter("|").parseText(strMesage);
+        Message message = new FixMsgFactory().withDelimiter("|").parseText(strMessage);
         StringBuilderSerializer stringBuilderSerializer = new StringBuilderSerializer(
                 DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
         String actualFixml = stringBuilderSerializer.serialize(message);

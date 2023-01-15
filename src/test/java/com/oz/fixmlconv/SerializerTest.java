@@ -81,7 +81,7 @@ public class SerializerTest {
     }
 
     @Test
-    void noDict_twoGropus() throws JsonProcessingException {
+    void noDict_twoGroups() throws JsonProcessingException {
         Message message = new Message();
         message.getHeader().setString(8, "FIX.4.2");
         message.getHeader().setString(35, "8");

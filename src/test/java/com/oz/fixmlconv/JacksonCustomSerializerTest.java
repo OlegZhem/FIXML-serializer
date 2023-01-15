@@ -44,9 +44,10 @@ class JacksonCustomSerializerTest {
                 "64=20200218|100=XTKO|150=F|151=2750|159=0.0|207=XTKO|236=0.0|278=174186|526=CARE|625=NORM|" +
                 "851=2|5020=20200218|5155=NCC|5459=Y2|6029=USD|6636=N|7693=10455|9412=250501|453=2|448=AF1|" +
                 "447=D|452=1|448=AF2|447=D|452=3|10=217|";
-        DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
+        Message message = createMessage(strMessage);
+        JacksonCustomSerializer jacksonCustomSerializer = createSerializer(message, fieldMapIteratorFactory);
 
-        String actualFixml = process(fieldMapIteratorFactory, strMessage);
+        String actualFixml = process(jacksonCustomSerializer, message);
 
         String expectedFixml = FileHelper.readFile(expectedXmlFileName);
         assertEquals(expectedFixml.replace("\r","").replaceAll("(?<=\\n)[\\t ]+",""), actualFixml.replace("><", ">\n<"));
@@ -54,11 +55,12 @@ class JacksonCustomSerializerTest {
 
     @Test
     void specialSymbols() throws ConfigError, InvalidMessage, IOException, FieldNotFound {
-        FieldMapIteratorFactory fieldMapIteratorFactory = new FieldMapIteratorFactoryMurexStyle();
-        String strMessage = "8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|";
-        DataDictionary dataDictionary = new DataDictionary("FIX44.xml");
+        Writer jsonWriter = new StringWriter();
+        Message message = createMessage("8=FIX.4.4|35=8|52=20200214-11:00:50.252946|100=AA&BB|");
+        JacksonCustomSerializer jacksonCustomSerializer =
+                createSerializer(message, new FieldMapIteratorFactoryMurexStyle());
 
-        String actualFixml = process(fieldMapIteratorFactory, strMessage);
+        String actualFixml = process(jacksonCustomSerializer, message);
 
         String expectedFixml = "<fixMessage>\n" +
                 "<header>\n" +
@@ -74,20 +76,28 @@ class JacksonCustomSerializerTest {
         assertEquals(expectedFixml, actualFixml.replace("><", ">\n<"));
     }
 
-    private String process(FieldMapIteratorFactory fieldMapIteratorFactory,
-                           String strMessage) throws InvalidMessage, IOException, ConfigError, FieldNotFound {
-        Message message = new FixMsgFactory().withDelimiter("|").parseText(strMessage);
+    private String process( JacksonCustomSerializer jacksonCustomSerializer,
+                           Message message) throws IOException, ConfigError, FieldNotFound {
         Writer jsonWriter = new StringWriter();
         ToXmlGenerator toXmlGenerator = new XmlFactory().createGenerator(jsonWriter);
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         SerializerProvider serializerProvider = xmlMapper.getSerializerProvider();
-        new JacksonCustomSerializer(DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory)
-                .serialize(message, toXmlGenerator, serializerProvider);
+        jacksonCustomSerializer.serialize(message, toXmlGenerator, serializerProvider);
         toXmlGenerator.flush();
         String actualFixml = jsonWriter.toString();
         LOG.info(actualFixml);
         return actualFixml;
     }
 
+    private Message createMessage(String strMessage) throws ConfigError, InvalidMessage {
+        return  new FixMsgFactory().withDelimiter("|").parseText(strMessage);
+    }
+
+    private JacksonCustomSerializer createSerializer(Message message, FieldMapIteratorFactory fieldMapIteratorFactory)
+            throws IOException, ConfigError, FieldNotFound {
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return new JacksonCustomSerializer(DictionaryManager.dictionaryByMessage(message), fieldMapIteratorFactory);
+    }
 }

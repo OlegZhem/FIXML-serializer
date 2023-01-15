@@ -1,0 +1,25 @@
+Benchmark                                                                (iteratorType)    Mode     Cnt   Score    Error   Units
+StringBuilderSerializerTest_JMH.benchmarkMethod                             Murex style   thrpt      20  80.393 ±  6.647  ops/ms
+StringBuilderSerializerTest_JMH.benchmarkMethod                                 Ordered   thrpt      20  64.020 ±  9.021  ops/ms
+StringBuilderSerializerTest_JMH.benchmarkMethod                             Murex style    avgt      20   0.015 ±  0.001   ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod                                 Ordered    avgt      20   0.013 ±  0.001   ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod                             Murex style  sample  788963   0.016 ±  0.001   ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.00       Murex style  sample           0.009            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.50       Murex style  sample           0.014            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.90       Murex style  sample           0.024            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.95       Murex style  sample           0.031            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.99       Murex style  sample           0.038            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.999      Murex style  sample           0.086            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.9999     Murex style  sample           0.845            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p1.00       Murex style  sample           1.321            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod                                 Ordered  sample  714003   0.015 ±  0.001   ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.00           Ordered  sample           0.010            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.50           Ordered  sample           0.014            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.90           Ordered  sample           0.017            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.95           Ordered  sample           0.021            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.99           Ordered  sample           0.040            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.999          Ordered  sample           0.082            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p0.9999         Ordered  sample           0.856            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod:benchmarkMethod·p1.00           Ordered  sample           1.417            ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod                             Murex style      ss      20   0.731 ±  0.301   ms/op
+StringBuilderSerializerTest_JMH.benchmarkMethod                                 Ordered      ss      20   0.381 ±  0.260   ms/op
